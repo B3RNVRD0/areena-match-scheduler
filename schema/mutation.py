@@ -123,7 +123,7 @@ class SwapTeams(graphene.Mutation):
     def mutate(self, info, input):
         match_id = input.match_id
         new_home_team_id = input.new_home_team_id
-        new_away_team_id = input.away_team_id
+        new_away_team_id = input.new_away_team_id
 
         match = Match.query.get(match_id)
         if not match:
