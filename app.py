@@ -1,8 +1,10 @@
-# app.py
 import os
 from flask import Flask, jsonify
 from config import Config
 from models import db
+
+from flask_graphql import GraphQLView
+from schema import schema as graphql_schema_instance 
 
 def create_app():
     app = Flask(__name__)
@@ -26,20 +28,27 @@ def create_app():
     @app.route('/init-db')
     def init_db_endpoint():
         with app.app_context():
-            db.create_all() 
+            db.create_all()
 
-            #  test
-            if not Team.query.first(): 
+            if not Team.query.first():
                 team_alpha = Team(name='Team Alpha')
                 team_beta = Team(name='Team Beta')
                 team_gamma = Team(name='Team Gamma')
-                team_delta = Team(name='Team Delta') 
+                team_delta = Team(name='Team Delta')
                 db.session.add_all([team_alpha, team_beta, team_gamma, team_delta])
                 db.session.commit()
                 return jsonify({"message": "Database initialized and test teams added!"}), 200
             else:
                 return jsonify({"message": "Database already initialized and teams might exist."}), 200
 
+    app.add_url_rule(
+        '/graphql',
+        view_func=GraphQLView.as_view(
+            'graphql',
+            schema=graphql_schema_instance, 
+            graphiql=True 
+        )
+    )
 
     return app
 
