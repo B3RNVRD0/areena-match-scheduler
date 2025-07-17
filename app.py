@@ -10,12 +10,6 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    if app.config.get('TESTING'):
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
-    else:
-        if not os.path.exists('instance'):
-            os.makedirs('instance')
-
     db.init_app(app)
 
     from models.team import Team
