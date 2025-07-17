@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+.venv_py39/
+.pytest_cache/
+
+# Banco de dados
+instance/
+*.db
+*.sqlite
+*.sqlite3
+
+.vscode/
+Thumbs.db
